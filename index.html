@@ -1,90 +1,141 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Progate</title>
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <meta charset="UTF-8">
+    <title>CD曲順維持・分割ツール（改良版）</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 20px auto; background: #f8f9fa; padding: 20px; color: #333; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        textarea { width: 100%; height: 120px; margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; box-sizing: border-box; }
+        .controls { display: flex; gap: 15px; align-items: center; margin-bottom: 20px; background: #eee; padding: 15px; border-radius: 8px; }
+        select { padding: 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 16px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .result-title { margin-top: 25px; padding-bottom: 10px; border-bottom: 2px solid #007bff; }
+        .disk-box { background: #fff; border: 1px solid #e0e0e0; margin-bottom: 15px; border-radius: 8px; overflow: hidden; }
+        .disk-header { background: #f1f3f5; padding: 10px 15px; font-weight: bold; display: flex; justify-content: space-between; border-bottom: 1px solid #e0e0e0; }
+        .song-list { padding: 10px 15px; font-size: 0.9em; line-height: 1.6; color: #444; word-break: break-all; }
+        .target-info { font-size: 0.9em; color: #666; margin-bottom: 15px; padding: 10px; background: #fffde7; border-left: 4px solid #fbc02d; }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <div class="header-left">
-        <img class="logo" src="https://prog-8.com/images/html/advanced/main_logo.png">
-      </div>
-      <span class="fa fa-bars menu-icon"></span>
-      <div class="header-right">
-        <a href="#">レッスン</a>
-        <a href="#">新規登録</a>
-        <a href="#" class="login">ログイン</a>
-      </div>
+
+<div class="card">
+    <h2>💿 CD曲順維持・分割シミュレーター</h2>
+    <p>曲順を変えずに、各ディスクの時間をできるだけ均等にします。</p>
+    
+    <label>曲の時間を入力（例: 3:54, 2:54...）</label>
+    <textarea id="timeInput" placeholder="3:54, 2:54, 3:17..."></textarea>
+    
+    <div class="controls">
+        <label>分割枚数:</label>
+        <select id="diskCount">
+            <option value="2">2枚組</option>
+            <option value="3">3枚組</option>
+            <option value="4">4枚組</option>
+            <option value="5">5枚組</option>
+        </select>
+        <button type="button" onclick="calculateSplit()">分割ポイントを計算</button>
     </div>
-  </header>
-  <div class="top-wrapper">
-    <div class="container">
-      <h1>LEARN TO CODE.<br>LEARN TO BE CREATIVE.</h1>
-      <p>Progateはオンラインプログラミング学習サービスです。<br>初心者にもやさしいスライドとレッスンで、ウェブサービスを作りながらプログラミングを学んでいきましょう。</p>
-      <div class="btn-wrapper">
-        <a href="#" class="btn signup">新規登録はこちら</a>
-        <p>or</p>
-        <a href="#" class="btn facebook"><span class="fa fa-facebook"></span>Facebookで登録</a>
-        <a href="#" class="btn twitter"><span class="fa fa-twitter"></span>Twitterで登録</a>
-      </div>
-    </div>
-  </div>
-  <div class="lesson-wrapper">
-    <div class="container">
-      <div class="heading">
-        <h2>Learn Where to Get Started!</h2>
-      </div>
-      <div class="lessons">
-        <div class="lesson">
-          <div class="lesson-icon">
-            <img src="https://prog-8.com/images/html/advanced/html.png">
-            <p>HTML & CSS</p>
-          </div>
-          <p class="text-contents">ウェブページの作成に使用される言語です。HTMLとCSSを組み合わせることで、静的なページを作り上げることができます。</p>
-        </div>
-        <div class="lesson">
-          <div class="lesson-icon">
-            <img src="https://prog-8.com/images/html/advanced/jQuery.png">
-            <p>jQuery</p>
-          </div>
-          <p class="text-contents">素敵な動きを手軽に実装できるJavaScriptライブラリです。 アニメーション効果をつけたり、Ajax（エイジャックス）を使って外部ファイルを読み込んだりと色々なことができます。</p>
-        </div>
-        <div class="lesson">
-          <div class="lesson-icon">
-            <img src="https://prog-8.com/images/html/advanced/ruby.png">
-            <p>Ruby</p>
-          </div>
-          <p class="text-contents">オープンソースの動的なプログラミング言語で、 シンプルさと高い生産性を備えています。大きなWebアプリケーションから小さな日用ツールまで、さまざまなソフトウェアを作ることができます。</p>
-        </div>
-        <div class="lesson">
-          <div class="lesson-icon">
-            <img src="https://prog-8.com/images/html/advanced/php.png">
-            <p>PHP</p>
-          </div>
-          <p class="text-contents">HTMLだけではページの内容を変えることはできません。PHPはHTMLにプログラムを埋め込み、それを可能にします。</p>
-        </div>
-      </div>
-      <div class="clear"></div>
-    </div>
-  </div>
-  <div class="message-wrapper">
-    <div class="container">
-      <div class="heading">
-        <h2>さぁ、あなたもProgateでプログラミングを学んでみませんか?</h2>
-        <h3>Let's learn to code, learn to be creative!</h3>
-      </div>
-      <span class="btn message">さっそく開発する</span>
-    </div>
-  </div>
-  <footer>
-    <div class="container">
-      <img src="https://prog-8.com/images/html/advanced/footer_logo.png">
-      <p>Learn to Code, Learn to be Creative.</p>
-    </div>
-  </footer>
+
+    <div id="resultArea"></div>
+</div>
+
+<script>
+// 時間の文字列（3:54など）を秒数に変換
+function timeToSec(t) {
+    if (!t) return null;
+    // 全角コロンを半角に変換し、数字とコロン以外を除去
+    const cleanT = t.replace(/：/g, ':').replace(/[^0-9:]/g, '');
+    const p = cleanT.split(':');
+    if (p.length < 2) return null;
+    return parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+}
+
+// 秒数を時間の文字列（3:54）に変換
+function secToTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m + ":" + sec.toString().padStart(2, '0');
+}
+
+function calculateSplit() {
+    const inputArea = document.getElementById('timeInput');
+    const resultArea = document.getElementById('resultArea');
+    const numDisks = parseInt(document.getElementById('diskCount').value);
+
+    // カンマ、改行、スペースなどで分割して配列にする
+    const rawTimes = inputArea.value.split(/[,\n\s、]/);
+    const songs = rawTimes.map(timeToSec).filter(s => s !== null);
+    
+    if (songs.length === 0) {
+        alert("有効な時間データが見つかりませんでした。「3:54, 2:54」のように入力してください。");
+        return;
+    }
+
+    const totalSec = songs.reduce((a, b) => a + b, 0);
+    const targetPerDisk = totalSec / numDisks;
+    
+    let disks = [];
+    let currentSongIndex = 0;
+
+    for (let d = 0; d < numDisks; d++) {
+        let currentDiskSongs = [];
+        let currentDiskTotal = 0;
+        
+        if (d < numDisks - 1) {
+            // 次の曲を加えたほうが目標に近いか、今の方が近いかを判定してループ
+            while (currentSongIndex < songs.length) {
+                let song = songs[currentSongIndex];
+                let currentDiff = Math.abs(currentDiskTotal - targetPerDisk);
+                let nextDiff = Math.abs((currentDiskTotal + song) - targetPerDisk);
+                
+                // 次の曲を足したほうが目標値に近いなら追加、そうでなければこのディスクは終了
+                // ただし、1曲も入っていない場合は必ず入れる
+                if (currentDiskSongs.length === 0 || nextDiff < currentDiff) {
+                    currentDiskTotal += song;
+                    currentDiskSongs.push(song);
+                    currentSongIndex++;
+                } else {
+                    break;
+                }
+                
+                // 残りの枚数に対して曲が足りなくなるのを防ぐ
+                if (songs.length - currentSongIndex < numDisks - (d + 1)) {
+                    break;
+                }
+            }
+        } else {
+            // 最後のディスクに残りを全部入れる
+            while (currentSongIndex < songs.length) {
+                currentDiskTotal += songs[currentSongIndex];
+                currentDiskSongs.push(songs[currentSongIndex]);
+                currentSongIndex++;
+            }
+        }
+        disks.push({ total: currentDiskTotal, items: currentDiskSongs });
+    }
+
+    // 結果表示
+    let html = `<h3 class="result-title">計算結果</h3>`;
+    html += `<div class="target-info">全体合計: <strong>${secToTime(totalSec)}</strong><br>1枚あたりの目標: <strong>${secToTime(Math.round(targetPerDisk))}</strong></div>`;
+    
+    disks.forEach((disk, i) => {
+        html += `
+            <div class="disk-box">
+                <div class="disk-header">
+                    <span>Disc ${i+1} (${disk.items.length}曲)</span>
+                    <span>計 ${secToTime(disk.total)}</span>
+                </div>
+                <div class="song-list">
+                    ${disk.items.map(s => secToTime(s)).join(' | ')}
+                </div>
+            </div>
+        `;
+    });
+    
+    resultArea.innerHTML = html;
+}
+</script>
 </body>
 </html>
